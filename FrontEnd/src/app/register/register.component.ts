@@ -14,10 +14,12 @@ export class RegisterComponent implements OnInit {
   serverErrorMessages: string = 'false';
 
   registerForm = this.formBuilder.group({
+    userName: new FormControl(null,[Validators.required]),
     email:new FormControl(null,[Validators.email,Validators.required]),
     password:new FormControl(null,Validators.required),
     cpass:new FormControl(null,Validators.required)
   })
+  
   constructor(private _router:Router,private formBuilder:FormBuilder,private userService:UserService) { }
 
   ngOnInit() {

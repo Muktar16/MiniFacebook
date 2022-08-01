@@ -14,14 +14,15 @@ export class HomeComponent implements OnInit {
 
   serverErrorMessages: string = 'false';
   storyImageBaseUrl = "http://127.0.0.1:9000/stories/";
-  currentUserEmail:any;
   allPosts:any;
   createStoryClicked = 0;
   imageFile: File | null = null;
   allStories:any;
-  userDetails: any;
+  currentUser = {
+    userName:'',
+    email:''
+  }
   postDetails ={
-    email :'',
     text:''
   };
 
@@ -36,8 +37,9 @@ export class HomeComponent implements OnInit {
   getCurrentUser(){
     this.userService.getUserProfile().subscribe(
       (res:any) => {
-        this.userDetails = res['user'];
-        this.currentUserEmail = this.userDetails.email;
+        this.currentUser.userName = res['user'].userName;
+        this.currentUser.email = res['user'].email;
+        //get all stories and status
         this.getPosts();
         this.getStories();
       },
@@ -49,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   //get all posts
   getPosts(){
-    this.postService.getPosts(this.currentUserEmail).subscribe(
+    this.postService.getPosts().subscribe(
       (res:any) => {
         this.allPosts = res;
       },
@@ -62,7 +64,7 @@ export class HomeComponent implements OnInit {
   
   //get all stories
   getStories(){
-    this.storyService.getStories(this.currentUserEmail).subscribe(
+    this.storyService.getStories(this.currentUser.email).subscribe(
       (res:any) =>{
         this.allStories = res;
         //change story url 
@@ -77,7 +79,6 @@ export class HomeComponent implements OnInit {
   }
 
   UploadPost(){
-    this.postDetails.email = this.currentUserEmail;
     this.postService.savePost(this.postDetails).subscribe(
       (res:any) => {
         alert("Post Uploaded Successfuly!!!");
@@ -101,7 +102,6 @@ export class HomeComponent implements OnInit {
     if (this.imageFile) {
       var imageDetails = new FormData();
       imageDetails.append('files', this.imageFile, this.imageFile.name);
-      imageDetails.append('email', this.currentUserEmail);
 
       this.storyService.saveStory(imageDetails).subscribe(
         (res:any) => {

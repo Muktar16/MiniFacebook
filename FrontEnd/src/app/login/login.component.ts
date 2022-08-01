@@ -39,18 +39,7 @@ export class LoginComponent implements OnInit {
         this.serverErrorMessages = err.error.message;
       }
     );
-    // if(!this.loginForm.valid){
-    //   this.serverErrorMessages = "Invalid Email or Password!!!!";
-    //   return;
-    // }
-    
-    // this.userService.login(this.loginForm.value).subscribe(
-    //   res =>{
-    //     //this.userService.setToken(res['token']);
-    //     this._router.navigate(['/homepage']);
-    //   } ,
-    //   error=>console.error(error)
-    // )
+ 
   }
 
 }

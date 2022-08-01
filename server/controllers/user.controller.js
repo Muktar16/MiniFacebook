@@ -6,6 +6,7 @@ const User = mongoose.model('User');
 
 module.exports.register = (req, res, next) => {
     var user = new User();
+    user.userName = req.body.userName;
     user.email = req.body.email;
     user.password = req.body.password;
     user.save((err, doc) => {
@@ -27,7 +28,7 @@ module.exports.authenticate = (req, res, next) => {
         // error from passport middleware
         if (err) return res.status(400).json(err);
         // registered user
-        else if (user) return res.status(200).json({ "token": user.generateJwt(),"currentUser":req.body.email });
+        else if (user) return res.status(200).json({ "token": user.generateJwt()});
         // unknown user or wrong password
         else return res.status(404).json(info);
     })(req, res);
@@ -39,7 +40,7 @@ module.exports.userProfile = (req, res, next) =>{
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else
-                return res.status(200).json({ status: true, user : _.pick(user,['email']) });
+                return res.status(200).json({ status: true, user : _.pick(user,['userName','email']) });
         }
     );
 }
