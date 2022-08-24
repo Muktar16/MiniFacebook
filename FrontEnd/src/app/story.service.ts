@@ -10,10 +10,10 @@ export class StoryService {
   constructor(private http:HttpClient) { }
 
   saveStory(postDetails:any){
-    return this.http.post(environment.apiBaseUrl+'/saveStory',postDetails);
+    return this.http.post(environment.apiBaseUrl+'/story/saveStory',postDetails);
   }
   
-  getStories(currentUser:any){
-    return this.http.get(environment.apiBaseUrl+'/getStories/'+currentUser);
+  getStories(){
+    return this.http.get(environment.apiBaseUrl+'/story/getStories/');
   }
 }

@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ctrlUser = require('../controllers/user.controller');
 
-
-const app=express();
-
+//const app=express();
 //app.use(express.static(__dirname + '/public'));
 
 router.post('/register', ctrlUser.register);

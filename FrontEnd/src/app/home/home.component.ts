@@ -13,7 +13,7 @@ import { UserService } from '../user.service';
 export class HomeComponent implements OnInit {
 
   serverErrorMessages: string = 'false';
-  storyImageBaseUrl = "http://127.0.0.1:9000/stories/";
+  storyImageBaseUrl = "http://127.0.0.1:9000/photos/";
   allPosts:any;
   createStoryClicked = 0;
   imageFile: File | null = null;
@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
   
   //get all stories
   getStories(){
-    this.storyService.getStories(this.currentUser.email).subscribe(
+    this.storyService.getStories().subscribe(
       (res:any) =>{
         this.allStories = res;
         //change story url 

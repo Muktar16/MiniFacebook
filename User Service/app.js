@@ -6,16 +6,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
-
-
 const rtsIndex = require('./routes/index.router');
 
 var app = express();
-
 // middleware
 app.use(bodyParser.json());
 app.use(cors());
 app.use(passport.initialize());
+//forward all auth request to index.router file
 app.use('/auth', rtsIndex);
 
 // error handler

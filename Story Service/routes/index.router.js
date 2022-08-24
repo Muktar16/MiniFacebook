@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const ctrStory = require('../controllers/story.controller');
-const jwtHelper = require('../config/jwtHelper');
+//const jwtHelper = require('../config/jwtHelper');
 
 const app=express();
 
@@ -19,8 +19,8 @@ var upload = multer({ storage: storage })
 app.use(express.static(__dirname + '/public'));
 app.use('/uploads', express.static('uploads'));
 
-router.post('/saveStory',upload.single("files"),jwtHelper.verifyJwtToken,ctrStory.saveStory);
-router.get('/getStories/:currentUser',ctrStory.getStories);
+router.post('/saveStory',upload.single("files"),ctrStory.saveStory);
+router.get('/getStories',ctrStory.getStories);
 
 
 module.exports = router;

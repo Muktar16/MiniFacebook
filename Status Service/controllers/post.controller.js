@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { verifyJwtToken } = require('../../User Service/config/jwtHelper');
+//const { verifyJwtToken } = require('../../User Service/config/jwtHelper');
 var Post = require('../models/post');
 const User = mongoose.model('User');
 const axios = require('axios');
