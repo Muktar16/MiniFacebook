@@ -5,4 +5,4 @@ mongoose.connect('mongodb://localhost:27017/StoryDB', (err) => {
     else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); }
 });
 
-require('./user.model');
+require('./story');
