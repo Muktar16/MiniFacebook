@@ -15,6 +15,7 @@ var app = express();
 // middleware
 app.use(bodyParser.json());
 app.use(cors());
+
 //app.use(passport.initialize());
 app.use('/story', rtsIndex);
 
@@ -31,4 +32,4 @@ app.use((err, req, res, next) => {
 });
 
 // start server
-app.listen(3002, () => console.log(`Story Server started at port : 3002`));
+app.listen(3000, () => console.log(`Story Server started at port : 3000`));

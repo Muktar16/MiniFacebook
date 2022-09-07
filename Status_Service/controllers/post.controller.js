@@ -4,7 +4,7 @@ var Post = require('../models/post');
 const User = mongoose.model('User');
 const axios = require('axios');
 
-const authUrl = "http://localhost:3000/auth/verifyJWT"
+const authUrl = "http://user-service:3000/auth/verifyJWT"
 
 async function verifyToken(request) {
     let response;

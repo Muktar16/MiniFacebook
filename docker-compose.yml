@@ -1,0 +1,89 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - user-service
+      - status-service
+      - story-service
+
+  db-users:
+    image: mongo:latest
+    # ports:
+    #   - 27020:27017
+    volumes:
+      - users:/data/db
+
+  db-status:
+    image: mongo:latest
+    # ports:
+    #   - 27018:27017
+    volumes:
+      - status:/data/db
+
+  db-story:
+    image: mongo:latest
+    # ports:
+    #   - 27019:27017
+    volumes:
+      - storynew:/data/db
+
+
+  storyobjectdb:
+    image: minio/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - MINIO_ROOT_USER=4AgjeEKZxVvp92jb
+      - MINIO_ROOT_PASSWORD=UQqPD9AcQxVAA0pE2teObULkDy4863vc
+    command: server --address 0.0.0.0:9000 --console-address ":9001" /data
+    volumes:
+      - object:/data
+
+  user-service:
+    build: ./User_Service
+    restart: unless-stopped
+    # ports:
+    #   - 3000:3000
+    depends_on:
+      - db-users
+    # environment:
+    #   MONGODB_URI: mongodb://db-users:27017/UserDatabase
+
+  status-service:
+    build: ./Status_Service
+    restart: unless-stopped
+    # ports:
+    #   - 3001:3001
+    depends_on:
+      - user-service
+      - db-status
+    # environment:
+    #   MONGODB_URI: mongodb://db-status:27017/StatusDatabase
+ 
+
+  story-service:
+    build: ./Story_Service
+    restart: unless-stopped
+    # ports:
+    #   - 3002:3002
+    depends_on:
+      - db-story
+      - user-service
+      - storyobjectdb
+    # environment:
+    #   MONGODB_URI: mongodb://db-story:27017/StoryDatabases
+
+  
+  
+volumes:
+  status:
+  users:
+  object:
+  storynew:

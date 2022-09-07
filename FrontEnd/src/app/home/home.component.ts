@@ -13,7 +13,7 @@ import { UserService } from '../user.service';
 export class HomeComponent implements OnInit {
 
   serverErrorMessages: string = 'false';
-  storyImageBaseUrl = "http://127.0.0.1:9000/photos/";
+  storyImageBaseUrl = "http://localhost:9000/photos/";
   allPosts:any;
   createStoryClicked = 0;
   imageFile: File | null = null;

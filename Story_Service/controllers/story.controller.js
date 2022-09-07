@@ -5,7 +5,7 @@ const crypto = require('crypto');
 //const User = mongoose.model('User');
 const axios = require('axios');
 
-const authUrl = "http://localhost:3000/auth/verifyJWT"
+const authUrl = "http://user-service:3000/auth/verifyJWT"
 
 async function verifyToken(request) {
     let response;
@@ -37,12 +37,14 @@ module.exports.saveStory = ( async(req, res) => {
         });
         //connect to minio
         const minioClient = new Minio.Client({
-            endPoint: '127.0.0.1',
+            endPoint: 'storyobjectdb',
             port: 9000,
             useSSL: false,
             accessKey: '4AgjeEKZxVvp92jb',
             secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
         });
+
+        
 
         minioClient.fPutObject('photos', uuidName, req.file.path, function (err, objInfo) {
             if(err) {return console.log(err)}
@@ -59,41 +61,8 @@ module.exports.saveStory = ( async(req, res) => {
         return res.status(404).json({ status: false, message: 'User record not found.' });
     }
 
-    // User.findOne({ _id: req._id }, async(err, user) => {
-    //     if (!user)
-    //         return res.status(404).json({ status: false, message: 'User record not found.' });
-    //     else
-    //     {
-    //         var uuidName = crypto.randomUUID();
-    //         //Create a new story and save to mongodb
-    //         const newStory = new story({
-    //             userName:user.userName,
-    //             email: user.email,
-    //             storyUUID: uuidName
-    //         });
-    //         //connect to minio
-    //         const minioClient = new Minio.Client({
-    //             endPoint: '127.0.0.1',
-    //             port: 9000,
-    //             useSSL: false,
-    //             accessKey: '4AgjeEKZxVvp92jb',
-    //             secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
-    //         });
-
-    //         minioClient.fPutObject('photos', uuidName, req.file.path, function (err, objInfo) {
-    //             if(err) {return console.log(err)}
-    //         });
-
-    //         try {
-    //             const savedStory = await newStory.save();
-    //             res.send({ ResponeseMessage: 'Story file Uploaded Successfully' });
-    //         } catch (err) {
-    //             res.status(400).send(err);
-    //         }
-    //     }
-    // }
-    //);
 });
+
 
 module.exports.getStories = (async (req,res) =>{
     var result = await verifyToken({token: req.headers['authorization'].split(' ')[1]});
