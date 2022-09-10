@@ -12,6 +12,16 @@ services:
       - status-service
       - story-service
 
+  
+  frontend:
+    container_name: frontend
+    build: ./FrontEnd
+    restart: unless-stopped
+    ports:
+        - 4200:4200
+    depends_on:
+        - nginx
+
   db-users:
     image: mongo:latest
     # ports:
@@ -35,16 +45,30 @@ services:
 
 
   storyobjectdb:
+    container_name: storyobjectdb
     image: minio/minio:latest
     ports:
-      - 9000:9000
-      # - 9001:9001
+        - 9000:9000
+        - 9001:9001
     environment:
-      - MINIO_ROOT_USER=4AgjeEKZxVvp92jb
-      - MINIO_ROOT_PASSWORD=UQqPD9AcQxVAA0pE2teObULkDy4863vc
-    command: server --address 0.0.0.0:9000 --console-address ":9000" /data
+        - MINIO_ROOT_USER=minioadmin
+        - MINIO_ROOT_PASSWORD=minioadmin
+    command: server --console-address ":9001" /data
     volumes:
-      - object:/data
+        - object:/data
+
+
+  # storyobjectdb:
+  #   image: minio/minio:latest
+  #   ports:
+  #     - 9000:9000
+  #     - 9001:9001
+  #   environment:
+  #     - MINIO_ROOT_USER=minioadmin
+  #     - MINIO_ROOT_PASSWORD=minioadmin
+  #   command: server --address 0.0.0.0:9000 --console-address ":9001" /data
+  #   volumes:
+  #     - object:/data
 
 
   user-service:

@@ -21,7 +21,7 @@ app.use('/uploads', express.static('uploads'));
 
 router.post('/saveStory',upload.single("files"),ctrStory.saveStory);
 router.get('/getStories',ctrStory.getStories);
-router.get('/photos',ctrStory.storyInd);
+router.get('/photos/:id',ctrStory.storyInd);
 
 
 module.exports = router;

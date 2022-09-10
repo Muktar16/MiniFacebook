@@ -9,8 +9,8 @@ const minioClient = new Minio.Client({
     endPoint: 'storyobjectdb',
     port: 9000,
     useSSL: false,
-    accessKey: '4AgjeEKZxVvp92jb',
-    secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
+    accessKey: 'minioadmin',
+    secretKey: 'minioadmin'
 });
 
 const authUrl = "http://user-service:3000/auth/verifyJWT"
@@ -58,8 +58,12 @@ module.exports.saveStory = ( async(req, res) => {
             console.log('Bucket created successfully');
         });
 
+        
+
+      
         minioClient.fPutObject('photos', uuidName, req.file.path, function (err, objInfo) {
             if(err) {return console.log(err)}
+            else console.log("Object successfully saved");
         });
 
         try {
@@ -83,6 +87,7 @@ module.exports.getStories = (async (req,res) =>{
     currentUser = result.data.user.email;
     try{
         const Stories = await story.find({email:{$ne: currentUser}}).sort({$natural:-1}).limit(10); 
+        //const Stories = await story.find().sort({$natural:-1}).limit(10);
         res.send(Stories);
     } catch(err){
         res.status(400).send({ResponeseMessage: 'Missing Image File'});
@@ -90,7 +95,7 @@ module.exports.getStories = (async (req,res) =>{
 });
 
 
-exports.storyInd = ((req, res) =>{
+module.exports.storyInd = ((req, res) =>{
     try {
         let data;
 
