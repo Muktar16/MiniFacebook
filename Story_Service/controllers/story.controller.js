@@ -5,6 +5,14 @@ const crypto = require('crypto');
 //const User = mongoose.model('User');
 const axios = require('axios');
 
+const minioClient = new Minio.Client({
+    endPoint: 'storyobjectdb',
+    port: 9000,
+    useSSL: false,
+    accessKey: '4AgjeEKZxVvp92jb',
+    secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
+});
+
 const authUrl = "http://user-service:3000/auth/verifyJWT"
 
 async function verifyToken(request) {
@@ -36,15 +44,19 @@ module.exports.saveStory = ( async(req, res) => {
             storyUUID: uuidName
         });
         //connect to minio
-        const minioClient = new Minio.Client({
-            endPoint: 'storyobjectdb',
-            port: 9000,
-            useSSL: false,
-            accessKey: '4AgjeEKZxVvp92jb',
-            secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
-        });
+        // const minioClient = new Minio.Client({
+        //     endPoint: 'storyobjectdb',
+        //     port: 9000,
+        //     useSSL: false,
+        //     accessKey: '4AgjeEKZxVvp92jb',
+        //     secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
+        // });
 
-        
+        minioClient.makeBucket('photos', 'us-east-1', function(err) {
+            if (err) return console.log(err)
+    
+            console.log('Bucket created successfully');
+        });
 
         minioClient.fPutObject('photos', uuidName, req.file.path, function (err, objInfo) {
             if(err) {return console.log(err)}
@@ -64,13 +76,42 @@ module.exports.saveStory = ( async(req, res) => {
 });
 
 
+
 module.exports.getStories = (async (req,res) =>{
     var result = await verifyToken({token: req.headers['authorization'].split(' ')[1]});
+
     currentUser = result.data.user.email;
     try{
         const Stories = await story.find({email:{$ne: currentUser}}).sort({$natural:-1}).limit(10); 
         res.send(Stories);
     } catch(err){
         res.status(400).send({ResponeseMessage: 'Missing Image File'});
+    }
+});
+
+
+exports.storyInd = ((req, res) =>{
+    try {
+        let data;
+
+        minioClient.getObject('photos', req.params.id, (err, objStream) => {
+
+            console.log('DHUKSEE');
+            if(err) {
+               
+                return res.status(404).send({ message: "Image not found" });
+            } 
+            //console.log("req is " + req.params.id);
+            objStream.on('data', (chunk) => {
+                data = !data ? new Buffer(chunk) : Buffer.concat([data, chunk]);
+            });
+            objStream.on('end', () => {
+                res.writeHead(200, { 'Content-Type': 'image/png' });
+                res.write(data);
+                res.end();
+            });
+        });
+    } catch (error) {
+        res.status(500).send({ message: "Internal Server Error at fetching image" });
     }
 });
