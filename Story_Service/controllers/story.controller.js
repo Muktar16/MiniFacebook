@@ -13,6 +13,8 @@ const minioClient = new Minio.Client({
     secretKey: 'minioadmin'
 });
 
+bucketExist = false;
+
 const authUrl = "http://user-service:3000/auth/verifyJWT"
 
 async function verifyToken(request) {
@@ -51,15 +53,15 @@ module.exports.saveStory = ( async(req, res) => {
         //     accessKey: '4AgjeEKZxVvp92jb',
         //     secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
         // });
-
-        minioClient.makeBucket('photos', 'us-east-1', function(err) {
-            if (err) return console.log(err)
-    
-            console.log('Bucket created successfully');
-        });
-
-        
-
+        if(!bucketExist)
+        {
+            bucketExist = true;
+            minioClient.makeBucket('photos', 'us-east-1', function(err) {
+                if (err) return console.log(err)
+            
+                console.log('Bucket created successfully');
+            });
+        }
       
         minioClient.fPutObject('photos', uuidName, req.file.path, function (err, objInfo) {
             if(err) {return console.log(err)}

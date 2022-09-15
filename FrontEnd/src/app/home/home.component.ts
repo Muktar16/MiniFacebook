@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   serverErrorMessages: string = 'false';
   // storyImageBaseUrl = "http://localhost:9000/photos/";
-  storyImageBaseUrl = "http://localhost:8080/story/photos/";
+  storyImageBaseUrl = "http://localhost:80/story/photos/";
   allPosts:any;
   createStoryClicked = 0;
   imageFile: File | null = null;
