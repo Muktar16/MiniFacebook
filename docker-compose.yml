@@ -16,6 +16,7 @@ services:
   frontend:
     container_name: frontend
     build: ./FrontEnd
+    image: muktar16/frontend
     restart: unless-stopped
     ports:
         - 4200:4200
@@ -58,21 +59,10 @@ services:
         - object:/data
 
 
-  # storyobjectdb:
-  #   image: minio/minio:latest
-  #   ports:
-  #     - 9000:9000
-  #     - 9001:9001
-  #   environment:
-  #     - MINIO_ROOT_USER=minioadmin
-  #     - MINIO_ROOT_PASSWORD=minioadmin
-  #   command: server --address 0.0.0.0:9000 --console-address ":9001" /data
-  #   volumes:
-  #     - object:/data
-
 
   user-service:
     build: ./User_Service
+    image: muktar16/userservice
     restart: unless-stopped
     # ports:
     #   - 3000:3000
@@ -83,6 +73,7 @@ services:
 
   status-service:
     build: ./Status_Service
+    image: muktar16/statusservice
     restart: unless-stopped
     # ports:
     #   - 3001:3001
@@ -95,6 +86,7 @@ services:
 
   story-service:
     build: ./Story_Service
+    image: muktar16/storyservice
     restart: unless-stopped
     # ports:
     #   - 3002:3002
