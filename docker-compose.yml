@@ -15,7 +15,7 @@ services:
   
   frontend:
     container_name: frontend
-    build: ./FrontEnd
+    #build: ./FrontEnd
     image: muktar16/frontend
     restart: unless-stopped
     ports:
@@ -46,7 +46,6 @@ services:
 
 
   storyobjectdb:
-    container_name: storyobjectdb
     image: minio/minio:latest
     ports:
         - 9000:9000
@@ -61,8 +60,7 @@ services:
 
 
   user-service:
-    container_name: userservice
-    build: ./User_Service
+    # build: ./User_Service
     image: muktar16/userservice
     restart: unless-stopped
     # ports:
@@ -73,8 +71,7 @@ services:
     #   MONGODB_URI: mongodb://db-users:27017/UserDatabase
 
   status-service:
-    container_name: statusservice
-    build: ./Status_Service
+    # build: ./Status_Service
     image: muktar16/statusservice
     restart: unless-stopped
     # ports:
@@ -87,8 +84,7 @@ services:
  
 
   story-service:
-    container_name: storyservice
-    build: ./Story_Service
+    # build: ./Story_Service
     
     image: muktar16/storyservice
     restart: unless-stopped
