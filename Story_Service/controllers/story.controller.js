@@ -45,14 +45,7 @@ module.exports.saveStory = ( async(req, res) => {
             email: result.data.user.email,
             storyUUID: uuidName
         });
-        //connect to minio
-        // const minioClient = new Minio.Client({
-        //     endPoint: 'storyobjectdb',
-        //     port: 9000,
-        //     useSSL: false,
-        //     accessKey: '4AgjeEKZxVvp92jb',
-        //     secretKey: 'UQqPD9AcQxVAA0pE2teObULkDy4863vc'
-        // });
+       
         if(!bucketExist)
         {
             bucketExist = true;

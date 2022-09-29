@@ -32,4 +32,4 @@ app.use((err, req, res, next) => {
 });
 
 // start server
-app.listen(3000, () => console.log(`Story Server started at port : 3000`));
+app.listen(3002, () => console.log(`Story Server started at port : 3002`));

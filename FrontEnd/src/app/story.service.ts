@@ -11,9 +11,11 @@ export class StoryService {
 
   saveStory(postDetails:any){
     return this.http.post(environment.apiBaseUrl+'/story/saveStory',postDetails);
+    //return this.http.post('http://localhost:80/story/saveStory',postDetails);
   }
   
   getStories(){
     return this.http.get(environment.apiBaseUrl+'/story/getStories/');
+    //return this.http.get('http://localhost:80/story/getStories/');
   }
 }

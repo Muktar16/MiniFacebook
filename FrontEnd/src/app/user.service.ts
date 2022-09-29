@@ -14,15 +14,18 @@ export class UserService {
   constructor(private _http:HttpClient) { }
 
   postUser(user:any){
+    //return this._http.post('http://localhost:80/auth/register',user,this.noAuthHeader);
     return this._http.post(environment.apiBaseUrl+'/auth/register',user,this.noAuthHeader);
   }
 
   login(authCredentials:any) {
     return this._http.post(environment.apiBaseUrl + '/auth/authenticate', authCredentials, this.noAuthHeader);
+    //return this._http.post('http://localhost:80/auth/authenticate', authCredentials, this.noAuthHeader);
   }
 
   getUserProfile() {
-    return this._http.get(environment.apiBaseUrl + '/auth/userprofile');
+    //return this._http.get('http://localhost:80/auth/userprofile');
+     return this._http.get(environment.apiBaseUrl + '/auth/userprofile');
   }
 
 

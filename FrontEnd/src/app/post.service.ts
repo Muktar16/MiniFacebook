@@ -12,10 +12,12 @@ export class PostService {
   constructor(private http:HttpClient) { }
 
   savePost(postDetails:any){
+    //return this.http.post('http://localhost:80/status/savePost',postDetails);
     return this.http.post(environment.apiBaseUrl+'/status/savePost',postDetails);
   }
 
   getPosts(){
+    //return this.http.get('http://localhost:80/status/getPosts');
     return this.http.get(environment.apiBaseUrl+'/status/getPosts');
   }
 }

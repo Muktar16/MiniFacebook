@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 services:
   nginx:
     image: nginx:latest
@@ -13,34 +13,27 @@ services:
       - story-service
 
   
-  frontend:
-    container_name: frontend
-    #build: ./FrontEnd
-    image: muktar16/frontend
-    restart: unless-stopped
-    ports:
-        - 4200:4200
-    depends_on:
-        - nginx
+  # frontend:
+  #   build: ./FrontEnd
+  #   image: inz/frontend
+  #   restart: unless-stopped
+  #   ports:
+  #       - 4200:4200
+  #   depends_on:
+  #       - nginx
 
   db-users:
     image: mongo:latest
-    # ports:
-    #   - 27020:27017
     volumes:
       - users:/data/db
 
   db-status:
     image: mongo:latest
-    # ports:
-    #   - 27018:27017
     volumes:
       - status:/data/db
 
   db-story:
     image: mongo:latest
-    # ports:
-    #   - 27019:27017
     volumes:
       - storynew:/data/db
 
@@ -58,45 +51,27 @@ services:
         - object:/data
 
 
-
   user-service:
-    # build: ./User_Service
-    image: muktar16/userservice
+    build: ./User_Service
     restart: unless-stopped
-    # ports:
-    #   - 3000:3000
     depends_on:
       - db-users
-    # environment:
-    #   MONGODB_URI: mongodb://db-users:27017/UserDatabase
 
   status-service:
-    # build: ./Status_Service
-    image: muktar16/statusservice
+    build: ./Status_Service
     restart: unless-stopped
-    # ports:
-    #   - 3001:3001
     depends_on:
       - user-service
       - db-status
-    # environment:
-    #   MONGODB_URI: mongodb://db-status:27017/StatusDatabase
  
 
   story-service:
-    # build: ./Story_Service
-    
-    image: muktar16/storyservice
+    build: ./Story_Service
     restart: unless-stopped
-    # ports:
-    #   - 3002:3002
     depends_on:
       - db-story
       - user-service
       - storyobjectdb
-    # environment:
-    #   MONGODB_URI: mongodb://db-story:27017/StoryDatabases
-
 
 volumes:
   status:
